@@ -1,0 +1,19 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © MarketShree
+
+//@version=4
+strategy("supertrend",overlay=true,default_qty_value=10)
+atrperiod=input(10,"ATR Length")
+factor=input(2,"Factor")
+[superTrend,direction]=supertrend(factor,atrperiod)
+
+if change (direction) < 0
+    strategy.entry("LONG",strategy.long,limit=open)
+
+if change(direction) > 0
+    strategy.entry("SHORT",strategy.short,limit=open)
+
+colup=direction==1 and direction[1]?color.new(color.red,0):color.new(color.red,100)
+coldown=direction==-1 and direction[1]?color.new(color.blue,0):color.new(color.blue,100)
+plot(superTrend,color=colup,linewidth=2)
+plot(superTrend,color=coldown,linewidth=2)
